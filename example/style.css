@@ -1,0 +1,98 @@
+
+html, body, #wrapper {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+#page1 {
+  background: greenyellow;
+}
+#page2 {
+  background: brown;
+}
+#page3 {
+  background: cornflowerblue;
+}
+#truc {
+  background: #000;
+}
+#bidule {
+  background: #999;
+}
+
+#wrapper > div > div > p {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 50px;
+  color: #FFF;
+  font-family: Arial;
+  margin-top: -25px;
+}
+
+#goLeft, #goRight, #goBottom, #goTop {
+  display: block;
+  position: absolute;
+  z-index: 10;
+}
+#goLeft {
+  top: 0;
+  left: 0;
+  width: 6%;
+  height: 100%;
+}
+#goRight {
+  top: 0;
+  right: 0;
+  width: 6%;
+  height: 100%;
+}
+#goTop {
+  top: 0;
+  right: 6%;
+  width: 88%;
+  height: 6%;
+}
+#goBottom {
+  bottom: 0;
+  right: 6%;
+  width: 88%;
+  height: 6%;
+}
+
+#goLeft span, #goRight span, #goBottom span, #goTop span {
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border: 20px solid transparent;
+  opacity: 0.2;
+}
+#goLeft:hover span, #goRight:hover span, #goBottom:hover span, #goTop:hover span {
+  opacity: 0.8;
+}
+#goLeft span {
+  border-right: 30px solid #666;
+  margin-left: -35px;
+  margin-top: -20px;
+}
+#goRight span {
+  border-left: 30px solid #666;
+  margin-left: -15px;
+  margin-top: -20px;
+}
+#goBottom span {
+  border-top: 30px solid #666;
+  margin-top: -15px;
+  margin-left: -20px;
+}
+#goTop span {
+  border-bottom: 30px solid #666;
+  margin-top: -35px;
+  margin-left: -20px;
+}
