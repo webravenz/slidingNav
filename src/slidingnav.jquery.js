@@ -21,7 +21,8 @@
     linkBottom: null,
     transitionDuration: 1,
     transitionType: 'ease',
-    keyboardNav: true
+    keyboardNav: true,
+    showMap: true
   };
   
   function SlidingNav(settings, $elem)
@@ -57,10 +58,11 @@
           var page = {
             div: lineDiv,
             col: colNum,
-            line: lineNum
+            line: lineNum,
+            id: lineDiv.attr('id')
           };
           lineDiv.css('display', 'none');
-          t.pagesById[lineDiv.attr('id')] = page;
+          t.pagesById[page.id] = page;
           t.pagesByPos[colNum][lineNum] = page;
         });
       });
@@ -95,8 +97,50 @@
         t.onUrlChange();
       });
       
+      // init keyboard events
+      if(t.settings.keyboardNav) {
+        t.initKeyboardNav();
+      }
+      
+      // show map
+      if(t.settings.showMap) {
+        t.initMap();
+      }
+      
       // show first page
       t.onUrlChange();
+    },
+    
+    initKeyboardNav: function() {
+      var t = this;
+      $(window).on('keydown', function(e) {
+        switch(e.keyCode) {
+          case 37 :
+            t.goLeft();
+            break;
+          case 39 :
+            t.goRight();
+            break;
+          case 38 :
+            t.goTop();
+            break;
+          case 40 :
+            t.goBottom();
+            break;
+        }
+      });
+    },
+    
+    initMap: function() {
+      this.map = $('<ul class="sn_map"></ul>');
+      for(var i = 0; i < this.pagesByPos.length; i++) {
+        var line = $('<li></li>');
+        for(var j = 0; j < this.pagesByPos[i].length; j++) {
+          line.append('<a href="#'+this.pagesByPos[i][j].id+'"></a>')
+        }
+        this.map.append(line);
+      }
+      this.$el.append(this.map);
     },
     
     showPage: function(page) {
@@ -119,6 +163,30 @@
         t.animePage(t.currentPage, side+'-disappear');
       } else {
         page.div.css(t.transformProp, 'translate3d(0,0,0)').css('display', 'block');
+      }
+      
+      // maj map
+      if(this.map != null) {
+        this.map.find('a').removeClass('active');
+        this.map.find('li:eq('+page.col+') > a:eq('+page.line+')').addClass('active');
+      }
+      
+      // maj arrows
+      if(this.settings.linkBottom != null) {
+        this.settings.linkBottom.removeClass('sn_hide');
+        if(page.col >= this.pagesByPos.length - 1) this.settings.linkBottom.addClass('sn_hide');
+      }
+      if(this.settings.linkTop != null) {
+        this.settings.linkTop.removeClass('sn_hide');
+        if(page.col == 0) this.settings.linkTop.addClass('sn_hide');
+      }
+      if(this.settings.linkLeft != null) {
+        this.settings.linkLeft.removeClass('sn_hide');
+        if(page.line == 0) this.settings.linkLeft.addClass('sn_hide');
+      }
+      if(this.settings.linkRight != null) {
+        this.settings.linkRight.removeClass('sn_hide');
+        if(page.line >= this.pagesByPos[page.col].length - 1) this.settings.linkRight.addClass('sn_hide');
       }
       
       t.currentPage = page;
